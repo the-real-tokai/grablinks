@@ -1,7 +1,7 @@
 # GrabLinks
 
-[![GitHub](https://img.shields.io/github/license/the-real-tokai/macuahuitl?color=green&label=License&style=flat)](https://github.com/the-real-tokai/grablinks/blob/master/LICENSE)
-[![GitHub Code Size in Bytes](https://img.shields.io/github/languages/code-size/the-real-tokai/macuahuitl?label=Code%20Size&style=flat)](https://github.com/the-real-tokai/grablinks/)
+[![GitHub](https://img.shields.io/github/license/the-real-tokai/grablinks?color=green&label=License&style=flat)](https://github.com/the-real-tokai/grablinks/blob/master/LICENSE)
+[![GitHub Code Size in Bytes](https://img.shields.io/github/languages/code-size/the-real-tokai/grablinks?label=Code%20Size&style=flat)](https://github.com/the-real-tokai/grablinks/)
 [![Twitter Follow](https://img.shields.io/twitter/follow/binaryriot?color=blue&label=Follow%20%40binaryriot&style=flat)](https://twitter.com/binaryriot)
 
 ## Synopsis
@@ -10,7 +10,7 @@
 
 ## Requirements
 
-An installation of `Python 3` (any version above v3.5 will do fine). Additionally the 3rd-party Python modules `requests`
+An installation of `Python 3` (any version above `3.5` should do fine). Additionally the 3rd-party Python modules `requests`
 and `beautifulsoup4` are required. Both modules can be easily installed with Pythons package manager `pip`, e.g.:
 
 ``` shell
