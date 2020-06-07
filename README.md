@@ -11,7 +11,7 @@
 ## Requirements
 
 An installation of `Python 3` (any version above `3.5` should do fine). Additionally the 3rd-party Python modules `requests`
-and `beautifulsoup4` are required. Both modules can be easily installed with Pythons package manager `pip`, e.g.:
+and `beautifulsoup4` are required. Both modules can be easily installed with Python's package manager `pip`, e.g.:
 
 ``` shell
 pip --install requests --user
