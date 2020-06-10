@@ -57,7 +57,7 @@ filter options:
 
 ``` shell
 # extract wikipedia links from 'www.example.com':
-./grablinks.py 'https://www.example.com/ --search 'wikipedia'
+./grablinks.py 'https://www.example.com/' --search 'wikipedia'
 https://ja.wikipedia.org/wiki/仲間由紀恵
 https://ja.wikipedia.org/wiki/黒木華
 https://ja.wikipedia.org/wiki/清野菜名
@@ -67,7 +67,7 @@ https://ja.wikipedia.org/wiki/清野菜名
 ``` shell
 # extract download links from 'www.example.com', create a shell script
 # on-the-fly and pass it along to sh to fetch things with wget:
-./grablinks.py 'https://www.example.com/ --search 'download.example.org' --format 'wget "%url%"' | sh
+./grablinks.py 'https://www.example.com/' --search 'download.example.org' --format 'wget "%url%"' | sh
 ```
 
 ## History

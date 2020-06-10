@@ -18,7 +18,7 @@
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-	$Id: grablinks.py 14 2020-06-06 23:07:37Z tokai $
+	$Id: grablinks.py 15 2020-06-07 01:22:21Z tokai $
 """
 
 __author__  = 'Christian Rosentreter'
