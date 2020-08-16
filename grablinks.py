@@ -18,11 +18,11 @@
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-	$Id: grablinks.py 15 2020-06-07 01:22:21Z tokai $
+	$Id: grablinks.py 16 2020-08-16 19:06:08Z tokai $
 """
 
 __author__  = 'Christian Rosentreter'
-__version__ = '1.1'
+__version__ = '1.2'
 __all__     = []
 
 
@@ -53,6 +53,10 @@ def grab_links(url, search, regex, formatstr, aclass, fix_links):
 	soup  = BeautifulSoup(req.text, "html.parser")
 
 	found_urls = 0
+	
+	# Just passing None to find_all's "class_" will skip "<a>"
+	# tags w/o any class, not what we want…
+	aclass = aclass if aclass is not None else lambda c: True
 
 	for link in soup.find_all('a', href=True, class_=aclass):
 		furl = link['href']

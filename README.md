@@ -68,11 +68,17 @@ https://ja.wikipedia.org/wiki/清野菜名
 # extract download links from 'www.example.com', create a shell script
 # on-the-fly and pass it along to sh to fetch things with wget:
 ./grablinks.py 'https://www.example.com/' --search 'download.example.org' --format 'wget "%url%"' | sh
+# Note: do not do that at home! It's dangerous. :-)
 ```
 
 ## History
 
 <table>
+    <tr>
+        <td valign=top>1.2</td>
+        <td valign=top nowrap>16-Aug-2020</td>
+        <td>Fix: links from '<a>' tags without a 'class' attribute were not part of the default result in some cases.</td>
+    </tr>
     <tr>
         <td valign=top>1.1</td>
         <td valign=top nowrap>7-Jun-2020</td>
