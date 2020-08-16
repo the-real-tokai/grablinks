@@ -77,7 +77,7 @@ https://ja.wikipedia.org/wiki/清野菜名
     <tr>
         <td valign=top>1.2</td>
         <td valign=top nowrap>16-Aug-2020</td>
-        <td>Fix: links from '<a>' tags without a 'class' attribute were not part of the default result in some cases.</td>
+        <td>Fix: in some cases links from "&lt;a&gt;" tags without a 'class' attribute were not part of the result.</td>
     </tr>
     <tr>
         <td valign=top>1.1</td>
