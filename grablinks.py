@@ -3,7 +3,7 @@
 	grablinks.py
 	Extracts and filters links from a remote HTML document.
 
-	Copyright © 2020 Christian Rosentreter
+	Copyright © 2020-2021 Christian Rosentreter
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 """
 
 __author__  = 'Christian Rosentreter'
-__version__ = '1.2'
+__version__ = '1.3'
 __all__     = []
 
 
@@ -82,6 +82,10 @@ def grab_links(url, search, regex, formatstr, aclass, fix_links):
 						tmp[1] = uinfo.netloc
 						if not parts.path:
 							tmp[2] = uinfo.path
+						elif tmp[2][0] == '/':
+							pass  # keep it as is
+						else:
+							tmp[2] = uinfo.path + ('/' if uinfo.path[-1] != '/' else '') + tmp[2]
 						if not parts.query:
 							tmp[3] = uinfo.query
 					furl = urllib.parse.urlunsplit(tmp)
