@@ -75,6 +75,11 @@ https://ja.wikipedia.org/wiki/清野菜名
 
 <table>
     <tr>
+        <td valign=top>1.3</td>
+        <td valign=top nowrap>6-Feb-2021</td>
+        <td>Fix: handling of common edge cases when '--fix-links' is used.</td>
+    </tr>
+    <tr>
         <td valign=top>1.2</td>
         <td valign=top nowrap>16-Aug-2020</td>
         <td>Fix: in some cases links from "&lt;a&gt;" tags without a 'class' attribute were not part of the result.</td>
