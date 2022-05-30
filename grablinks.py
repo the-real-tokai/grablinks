@@ -3,7 +3,7 @@
 	grablinks.py
 	Extracts and filters links from a remote HTML document.
 
-	Copyright © 2020-2021 Christian Rosentreter
+	Copyright © 2020-2022 Christian Rosentreter
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -18,11 +18,11 @@
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-	$Id: grablinks.py 16 2020-08-16 19:06:08Z tokai $
+	$Id: grablinks.py 17 2022-05-30 04:09:01Z tokai $
 """
 
 __author__  = 'Christian Rosentreter'
-__version__ = '1.3'
+__version__ = '1.4'
 __all__     = []
 
 
@@ -53,10 +53,16 @@ def grab_links(url, search, regex, formatstr, aclass, fix_links):
 	soup  = BeautifulSoup(req.text, "html.parser")
 
 	found_urls = 0
-	
-	# Just passing None to find_all's "class_" will skip "<a>"
-	# tags w/o any class, not what we want…
-	aclass = aclass if aclass is not None else lambda c: True
+
+	if aclass is not None:
+		# Make sure multiple classes can be found in any order, else --class 'foo bar' only
+		# could match class="foo bar", but not class="bar foo".
+		if ' ' in aclass:
+			aclass = [s.strip() for s in aclass.split(' ')]
+	else:
+		# Just passing None to find_all's "class_" will skip "<a>"
+		# tags w/o any class, not what we want…
+		aclass = lambda c: True
 
 	for link in soup.find_all('a', href=True, class_=aclass):
 		furl = link['href']
@@ -129,7 +135,7 @@ def main():
 
 	g = ap.add_argument_group('filter options')
 	g.add_argument('-c', '--class', type=str, metavar='CLASS', dest='aclass',
-		help='only extract URLs from href attributes of <a>nchor elements with the specified class attribute content')
+		help='only extract URLs from href attributes of <a>nchor elements with the specified class attribute content. Multiple classes, separated by space, are evaluated with an logical OR, so any <a>nchor that has at least one of the classes will match.')
 	g.add_argument('-s', '--search', type=str,
 		help='only output entries from the extracted result set, if the search string occurs in the URL')
 	g.add_argument('-x', '--regex', type=str,
