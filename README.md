@@ -44,7 +44,10 @@ optional arguments:
 filter options:
   -c CLASS, --class CLASS
                         only extract URLs from href attributes of <a>nchor
-                        elements with the specified class attribute content
+                        elements with the specified class attribute content.
+                        Multiple classes, separated by space, are evaluated
+                        with an logical OR, so any <a>nchor that has at least
+                        one of the classes will match.
   -s SEARCH, --search SEARCH
                         only output entries from the extracted result set, if
                         the search string occurs in the URL
@@ -74,6 +77,11 @@ $ grablinks.py 'https://www.example.com/' --search 'download.example.org' --form
 ## History
 
 <table>
+    <tr>
+        <td valign=top>1.4</td>
+        <td valign=top nowrap>30-May-2022</td>
+        <td>Improved handling of passing multiple classes to '--class'.</td>
+    </tr>
     <tr>
         <td valign=top>1.3</td>
         <td valign=top nowrap>6-Feb-2021</td>
