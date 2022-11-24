@@ -22,7 +22,7 @@
 """
 
 __author__  = 'Christian Rosentreter'
-__version__ = '1.4'
+__version__ = '1.5'
 __all__     = []
 
 
@@ -38,7 +38,7 @@ import urllib
 try:
 	import requests
 	from bs4 import BeautifulSoup
-except ImportError as e:
+except ImportError:
 	print(('grablinks.py requires the Python modules `requests\' and `beautifulsoup4\'. Both modules '
 		'can be installed with, e.g., `pip install requests beautifulsoup4 --user\''), file=sys.stderr)
 	sys.exit(1)
@@ -49,7 +49,7 @@ def grab_links(url, search, regex, formatstr, aclass, fix_links):
 	"""This is where the magic happens…"""
 
 	uinfo = urllib.parse.urlsplit(url, scheme='https', allow_fragments=True)
-	req   = requests.get(url)
+	req   = requests.get(url, timeout=30)
 	soup  = BeautifulSoup(req.text, "html.parser")
 
 	found_urls = 0
@@ -62,7 +62,7 @@ def grab_links(url, search, regex, formatstr, aclass, fix_links):
 	else:
 		# Just passing None to find_all's "class_" will skip "<a>"
 		# tags w/o any class, not what we want…
-		aclass = lambda c: True
+		aclass = lambda c: True  # pylint: disable=unnecessary-lambda-assignment
 
 	for link in soup.find_all('a', href=True, class_=aclass):
 		furl = link['href']
