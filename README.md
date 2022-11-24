@@ -6,7 +6,7 @@
 
 ## Synopsis
 
-`grablinks.py` is simple and streamlined Python 3 script to extract and filter links from a remote HTML resource.
+`grablinks.py` is a simple and streamlined Python 3 script to extract and filter links from a remote HTML resource.
 
 ## Requirements
 
