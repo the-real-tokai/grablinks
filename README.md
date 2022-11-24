@@ -78,6 +78,11 @@ $ grablinks.py 'https://www.example.com/' --search 'download.example.org' --form
 
 <table>
     <tr>
+        <td valign=top>1.5</td>
+        <td valign=top nowrap>24-Nov-2022</td>
+        <td>Added a (fixed) timeout to the remote request.</td>
+    </tr>
+    <tr>
         <td valign=top>1.4</td>
         <td valign=top nowrap>30-May-2022</td>
         <td>Improved handling of passing multiple classes to '--class'.</td>
