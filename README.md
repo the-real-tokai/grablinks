@@ -98,7 +98,7 @@ $ sh fetchfiles.sh
         <td valign=top nowrap>2-Dec-2023</td>
         <td>
 			Added '--insecure' argument to disable SSL/TLS certificate verification<br>
-			Added support for '%text' placeholder in format string (&lt;a&gt;text&lt;/a&gt;)
+			Added support for '%text%' placeholder in format string (&lt;a&gt;text&lt;/a&gt;)
 		</td>
 	</tr>
     <tr>
