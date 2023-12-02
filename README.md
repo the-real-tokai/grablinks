@@ -21,8 +21,8 @@ pip --install beautifulsoup4 --user
 ## Usage
 
 ```
-usage: grablinks.py [-h] [-V] [-f FORMATSTR] [--fix-links] [-c CLASS]
-                    [-s SEARCH] [-x REGEX]
+usage: grablinks.py [-h] [-V] [--insecure] [-f FORMATSTR] [--fix-links]
+                    [-c CLASS] [-s SEARCH] [-x REGEX]
                     URL
 
 Extracts, and optionally filters, all links (`<a href=""/>') from a remote
@@ -34,10 +34,14 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   -V, --version         show version number and exit
+  --insecure            disable verification of SSL/TLS certificates (e.g. to
+                        allow self-signed certificates)
   -f FORMATSTR, --format FORMATSTR
                         a format string to wrap in the output: %url% is
-                        replaced by found URL entries; other supported
-                        placeholders: %id%, %guid%, and %hash%
+                        replaced by found URL entries; %text% is replaced with
+                        the text content of the link; other supported
+                        placeholders for generated values: %id%, %guid%, and
+                        %hash%
   --fix-links           try to convert relative and fragmental URLs to
                         absolute URLs (after filtering)
 
@@ -54,6 +58,9 @@ filter options:
   -x REGEX, --regex REGEX
                         only output entries from the extracted result set, if
                         the URL matches the regular expression
+
+Report bugs, request features, or provide suggestions via
+https://github.com/the-real-tokai/grablinks/issues
 ```
 
 ### Usage Examples
@@ -74,9 +81,26 @@ $ grablinks.py 'https://www.example.com/' --search 'download.example.org' --form
 # Note: Do not do that at home. It is dangerous! 😱
 ```
 
+``` shell
+# extract/ handle links like
+# <a href="https://example.com/crypricnumber">properfilename.dat</a>
+$ grablinks.py 'https://www.example.com/' --format 'wget '\''%url%'\'' -O '\''%text%'\' > fetchfiles.sh
+$ sh fetchfiles.sh
+# Note: %text% is not sanitized by grablinks.py for safe shell usage. It is
+#       recommended to verify this before executing things automatically
+```
+
 ## History
 
 <table>
+	<tr>
+        <td valign=top>1.6</td>
+        <td valign=top nowrap>2-Dec-2023</td>
+        <td>
+			Added '--insecure' argument to disable SSL/TLS certificate verification<br>
+			Added support for '%text' placeholder in format string (&lt;a&gt;text&lt;/a&gt;)
+		</td>
+	</tr>
     <tr>
         <td valign=top>1.5</td>
         <td valign=top nowrap>24-Nov-2022</td>

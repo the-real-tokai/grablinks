@@ -3,7 +3,7 @@
 	grablinks.py
 	Extracts and filters links from a remote HTML document.
 
-	Copyright © 2020-2022 Christian Rosentreter
+	Copyright © 2020-2023 Christian Rosentreter
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 """
 
 __author__  = 'Christian Rosentreter'
-__version__ = '1.5'
+__version__ = '1.6'
 __all__     = []
 
 
@@ -34,6 +34,7 @@ import uuid
 import hashlib
 import urllib
 
+# TODO: support other 'src', e.g. img src
 # TODO: Kill off the 3rd-party dependencies? Python's own modules should be sufficient here…
 try:
 	import requests
@@ -45,11 +46,11 @@ except ImportError:
 
 
 
-def grab_links(url, search, regex, formatstr, aclass, fix_links):
+def grab_links(url, search, regex, formatstr, aclass, fix_links, insecure):
 	"""This is where the magic happens…"""
 
 	uinfo = urllib.parse.urlsplit(url, scheme='https', allow_fragments=True)
-	req   = requests.get(url, timeout=30)
+	req   = requests.get(url, timeout=30, verify=(False if insecure else True))
 	soup  = BeautifulSoup(req.text, "html.parser")
 
 	found_urls = 0
@@ -107,6 +108,7 @@ def grab_links(url, search, regex, formatstr, aclass, fix_links):
 			o = o.replace('%id%',   str(found_urls))
 			o = o.replace('%guid%', str(uuid.uuid4()))
 			o = o.replace('%hash%', hashlib.sha224(furl.encode('utf-8')).hexdigest())
+			o = o.replace('%text%', link.text)
 			print(o)
 		else:
 			print(furl)
@@ -127,15 +129,20 @@ def main():
 		help="show version number and exit", version='%(prog)s {}'.format(__version__))
 	ap.add_argument('url', type=str, metavar='URL',
 		help='a fully qualified URL to the source HTML document')
+	ap.add_argument('--insecure', action='store_true',
+		help='disable verification of SSL/TLS certificates (e.g. to allow self-signed certificates)')
 	ap.add_argument('-f', '--format', type=str, dest='formatstr',
-		help=('a format string to wrap in the output: %%url%% is replaced by found URL entries; other supported '
-			'placeholders: %%id%%, %%guid%%, and %%hash%%'))
+		help=('a format string to wrap in the output: %%url%% is replaced by found URL entries; %%text%% is replaced '
+			'with the text content of the link; other supported placeholders for generated values: %%id%%, %%guid%%, '
+			'and %%hash%%'))
 	ap.add_argument('--fix-links', action='store_true',
 		help='try to convert relative and fragmental URLs to absolute URLs (after filtering)')
 
 	g = ap.add_argument_group('filter options')
 	g.add_argument('-c', '--class', type=str, metavar='CLASS', dest='aclass',
-		help='only extract URLs from href attributes of <a>nchor elements with the specified class attribute content. Multiple classes, separated by space, are evaluated with an logical OR, so any <a>nchor that has at least one of the classes will match.')
+		help='only extract URLs from href attributes of <a>nchor elements with the specified class attribute content. '
+			'Multiple classes, separated by space, are evaluated with an logical OR, so any <a>nchor that has at least '
+			'one of the classes will match.')
 	g.add_argument('-s', '--search', type=str,
 		help='only output entries from the extracted result set, if the search string occurs in the URL')
 	g.add_argument('-x', '--regex', type=str,
