@@ -65,7 +65,7 @@ https://github.com/the-real-tokai/grablinks/issues
 
 ### Usage Examples
 
-``` shell
+```shell
 # extract wikipedia links from 'www.example.com':
 $ grablinks.py 'https://www.example.com/' --search 'wikipedia'
 https://ja.wikipedia.org/wiki/仲間由紀恵
@@ -74,14 +74,19 @@ https://ja.wikipedia.org/wiki/清野菜名
 …
 ```
 
-``` shell
+```shell
 # extract download links from 'www.example.com', create a shell script
 # on-the-fly and pass it along to sh to fetch things with wget:
 $ grablinks.py 'https://www.example.com/' --search 'download.example.org' --format 'wget "%url%"' | sh
 # Note: Do not do that at home. It is dangerous! 😱
 ```
 
-``` shell
+```shell
+# alternatively just pass to wget directly:
+$ grablinks.py 'https://www.example.com/' --search 'download.example.org' | sort -u | wget -i-
+```
+
+```shell
 # extract/ handle links like
 # <a href="https://example.com/crypricnumber">properfilename.dat</a>
 $ grablinks.py 'https://www.example.com/' --format 'wget '\''%url%'\'' -O '\''%text%'\' > fetchfiles.sh
