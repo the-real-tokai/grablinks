@@ -88,7 +88,7 @@ $ grablinks.py 'https://www.example.com/' --search 'download.example.org' | sort
 
 ```shell
 # extract/ handle links like
-# <a href="https://example.com/crypricnumber">properfilename.dat</a>
+# <a href="https://example.com/a-cryptic-ID">proper-filename.ext</a>
 $ grablinks.py 'https://www.example.com/' --format 'wget '\''%url%'\'' -O '\''%text%'\' > fetchfiles.sh
 $ sh fetchfiles.sh
 # Note: %text% is not sanitized by grablinks.py for safe shell usage. It is
