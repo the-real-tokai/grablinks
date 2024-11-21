@@ -3,7 +3,7 @@
 [![GitHub](https://img.shields.io/github/license/the-real-tokai/grablinks?color=green&label=License&style=flat)](https://github.com/the-real-tokai/grablinks/blob/master/LICENSE)
 [![GitHub Code Size in Bytes](https://img.shields.io/github/languages/code-size/the-real-tokai/grablinks?label=Code%20Size&style=flat)](https://github.com/the-real-tokai/grablinks/)
 [![Mastodon Follow](https://img.shields.io/badge/mastodon-follow?id=109326414755382704&server=https%3A%2F%2Fsocial.anoxinon.de&color=blue&label=Follow%20%40binaryriot&style=flat)](https://social.anoxinon.de/@binaryriot)
-[![Twitter Follow](https://img.shields.io/twitter/follow/binaryriot?color=blue&label=Follow%20%40binaryriot&style=flat)](https://twitter.com/binaryriot)
+[![Twitter Follow](https://img.shields.io/badge/twitter-follow?user=binaryriot&color=blue&label=Follow%20%40binaryriot&style=flat)](https://twitter.com/binaryriot)
 
 ## Synopsis
 
