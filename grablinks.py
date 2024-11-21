@@ -3,7 +3,7 @@
 	grablinks.py
 	Extracts and filters links from a remote HTML document.
 
-	Copyright © 2020-2023 Christian Rosentreter
+	Copyright © 2020-2024 Christian Rosentreter
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -18,11 +18,11 @@
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-	$Id: grablinks.py 17 2022-05-30 04:09:01Z tokai $
+	$Id: grablinks.py 29 2024-11-21 12:57:37Z tokai $
 """
 
 __author__  = 'Christian Rosentreter'
-__version__ = '1.6'
+__version__ = '1.8'
 __all__     = []
 
 
@@ -34,7 +34,6 @@ import uuid
 import hashlib
 import urllib
 
-# TODO: support other 'src', e.g. img src
 # TODO: Kill off the 3rd-party dependencies? Python's own modules should be sufficient here…
 try:
 	import requests
@@ -46,11 +45,18 @@ except ImportError:
 
 
 
-def grab_links(url, search, regex, formatstr, aclass, fix_links, insecure):
+def grab_links(url, search, regex, formatstr, aclass, fix_links, insecure, images):
 	"""This is where the magic happens…"""
 
 	uinfo = urllib.parse.urlsplit(url, scheme='https', allow_fragments=True)
-	req   = requests.get(url, timeout=30, verify=(False if insecure else True))
+
+	if insecure:
+		import urllib3
+		urllib3.disable_warnings()
+		req = requests.get(url, timeout=30, verify=False)
+	else:
+		req = requests.get(url, timeout=30)
+
 	soup  = BeautifulSoup(req.text, "html.parser")
 
 	found_urls = 0
@@ -65,8 +71,10 @@ def grab_links(url, search, regex, formatstr, aclass, fix_links, insecure):
 		# tags w/o any class, not what we want…
 		aclass = lambda c: True  # pylint: disable=unnecessary-lambda-assignment
 
-	for link in soup.find_all('a', href=True, class_=aclass):
-		furl = link['href']
+	for link in (
+		soup.find_all('a', href=True, class_=aclass) if not images else soup.find_all('img', src=True, class_=aclass)
+	):
+		furl = link['href'] if not images else link['src']
 		logging.debug('URL extracted: %s', furl)
 
 		if (search is not None) and (furl.find(search) is -1):
@@ -137,6 +145,8 @@ def main():
 			'and %%hash%%'))
 	ap.add_argument('--fix-links', action='store_true',
 		help='try to convert relative and fragmental URLs to absolute URLs (after filtering)')
+	ap.add_argument('--images', action='store_true',
+		help='extract `<img src=""/>\' instead `<a href=""/>\'.')
 
 	g = ap.add_argument_group('filter options')
 	g.add_argument('-c', '--class', type=str, metavar='CLASS', dest='aclass',
