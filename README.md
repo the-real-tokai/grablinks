@@ -101,6 +101,17 @@ $ sh fetchfiles.sh
 
 <table>
 	<tr>
+		<td valign=top>1.9</td>
+		<td valign=top nowrap>28-Dec-2024</td>
+		<td>
+			Identify with proper user agents for remote requests<br>
+			--fix-links: Update input/ response URL in case of redirections<br>
+			--fix-links: Improved handling of some path edge-cases<br>
+			Avoid unnecessary (re-)encoding (assume all loaded data as bytes)<br>
+			Added basic support for 'file://' URIs
+		</td>
+	</tr>
+	<tr>
 		<td valign=top>1.8</td>
 		<td valign=top nowrap>21-Nov-2024</td>
 		<td>Added support for "&lt;img src=&quot;&quot;&gt;" via '--images'.</td>

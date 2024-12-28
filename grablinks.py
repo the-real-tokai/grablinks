@@ -18,11 +18,11 @@
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-	$Id: grablinks.py 29 2024-11-21 12:57:37Z tokai $
+	$Id: grablinks.py 30 2024-12-28 19:47:03Z tokai $
 """
 
 __author__  = 'Christian Rosentreter'
-__version__ = '1.8'
+__version__ = '1.9'
 __all__     = []
 
 
@@ -33,6 +33,7 @@ import logging
 import uuid
 import hashlib
 import urllib
+import posixpath
 
 # TODO: Kill off the 3rd-party dependencies? Python's own modules should be sufficient here…
 try:
@@ -48,16 +49,40 @@ except ImportError:
 def grab_links(url, search, regex, formatstr, aclass, fix_links, insecure, images):
 	"""This is where the magic happens…"""
 
-	uinfo = urllib.parse.urlsplit(url, scheme='https', allow_fragments=True)
+	if url.startswith('file://'):
+		abspath = url[7:]  # skip 'file://'
 
-	if insecure:
-		import urllib3
-		urllib3.disable_warnings()
-		req = requests.get(url, timeout=30, verify=False)
+		# TODO: no handling for other hosts besides 'localhost', see:
+		#       https://datatracker.ietf.org/doc/html/rfc8089
+		if abspath.startswith('localhost'):
+			abspath = abspath[9:]
+
+		# Note: open in binary mode, so 'html.parser' can deal with encoding issues.
+		with open(abspath, 'rb') as fh:
+			loaded_data = fh.read()
 	else:
-		req = requests.get(url, timeout=30)
+		params = {
+			'timeout': 30,
+			'headers': {
+				'User-Agent': 'grablinks.py/{} -- https://github.com/the-real-tokai/grablinks'.format(__version__),
+			},
+		}
 
-	soup  = BeautifulSoup(req.text, "html.parser")
+		if insecure:
+			import urllib3
+			urllib3.disable_warnings()
+			params['verify'] = False
+
+		response    = requests.get(url, **params)
+		loaded_data = response.content
+
+		url = response.url  # update url, in case there was a redirection
+
+	uinfo = urllib.parse.urlsplit(url, scheme='https', allow_fragments=True)
+	logging.debug(uinfo)
+
+
+	soup  = BeautifulSoup(loaded_data, 'html.parser')
 
 	found_urls = 0
 
@@ -98,9 +123,12 @@ def grab_links(url, search, regex, formatstr, aclass, fix_links, insecure, image
 						if not parts.path:
 							tmp[2] = uinfo.path
 						elif tmp[2][0] == '/':
-							pass  # keep it as is
+							pass  # absolute, keep it as is
 						else:
-							tmp[2] = uinfo.path + ('/' if uinfo.path[-1] != '/' else '') + tmp[2]
+							p = uinfo.path
+							if p[-1] != '/':  # last segment of input/ response URL seems to be a file
+								p = posixpath.dirname(uinfo.path)
+							tmp[2] = posixpath.join(p, tmp[2])
 						if not parts.query:
 							tmp[3] = uinfo.query
 					furl = urllib.parse.urlunsplit(tmp)
