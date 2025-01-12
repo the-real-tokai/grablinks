@@ -22,12 +22,13 @@ pip --install beautifulsoup4 --user
 ## Usage
 
 ```
-usage: grablinks.py [-h] [-V] [--insecure] [-f FORMATSTR] [--fix-links]
-                    [--images] [-c CLASS] [-s SEARCH] [-x REGEX]
+usage: grablinks.py [-h] [-V] [--insecure] [-t TAG] [-a ATTRIBUTE]
+                    [-f FORMATSTR] [--fix-links] [-c CLASS] [-s SEARCH]
+                    [-x REGEX]
                     URL
 
-Extracts, and optionally filters, all links (`<a href=""/>') from a remote
-HTML document.
+Extracts, and optionally filters, links (`<a href=""/>') from a remotely or
+locally stored HTML document.
 
 positional arguments:
   URL                   a fully qualified URL to the source HTML document
@@ -37,6 +38,11 @@ optional arguments:
   -V, --version         show version number and exit
   --insecure            disable verification of SSL/TLS certificates (e.g. to
                         allow self-signed certificates)
+  -t TAG, --tag TAG     extract from given tag (default: `a'), also see
+                        `--attribute'
+  -a ATTRIBUTE, --attribute ATTRIBUTE
+                        extract from given attribute (default: `href'), also
+                        see `--tag'
   -f FORMATSTR, --format FORMATSTR
                         a format string to wrap in the output: %url% is
                         replaced by found URL entries; %text% is replaced with
@@ -45,9 +51,8 @@ optional arguments:
                         %hash%
   --fix-links           try to convert relative and fragmental URLs to
                         absolute URLs (after filtering)
-  --images              extract `<img src=""/>' instead `<a href=""/>'.
 
-filter options:
+additional filters:
   -c CLASS, --class CLASS
                         only extract URLs from href attributes of <a>nchor
                         elements with the specified class attribute content.
@@ -97,9 +102,24 @@ $ sh fetchfiles.sh
 #       recommended to verify this before executing things automatically
 ```
 
+```shell
+# extract images
+$ grablinks.py 'https://www.example.com/' --tag 'img' --attribute 'src'
+```
+
 ## History
 
 <table>
+	<tr>
+		<td valign=top>1.10</td>
+		<td valign=top nowrap>12-Dec-2025</td>
+		<td>
+			Added '--tag' and '--attribute' for more versatility<br>
+			Deprecated '--images' switch (internally wraps to '--tag'/ '--attributes' now)<br>
+			Improved 'file://' handling<br>
+			Other small improvements 
+		</td>
+	</tr>
 	<tr>
 		<td valign=top>1.9</td>
 		<td valign=top nowrap>28-Dec-2024</td>
